@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
             numeroSorteadoTextView.setText(colunaSorteada + "-" + numeroSorteado);
 
-            if (numerosSorteados.size() >= 3) {
+            if (numerosSorteados.size() >= 75) {
                 sortearPedraButton.setClickable(false);
                 sortearPedraButton.setText("Todos os números já sorteados!");
             }
