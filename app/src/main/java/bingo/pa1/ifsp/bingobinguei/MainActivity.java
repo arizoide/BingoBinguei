@@ -13,13 +13,18 @@ import java.util.Random;
 
 /*
 Postar até sexta no Moodle. Sorteio de bingo aplicativo
-Utilizar imagem
-Coordenar letra e número
-Não sortear a mesma bola duas vezes.
-Bônus, opção de escolher se repete bolinha ou nao.
-Colocar Github
+Utilizar imagem - OK PARA ÍCONE
+Coordenar letra e número - FEITO
+Não sortear a mesma bola duas vezes. - DEITO
+Bônus, opção de escolher se repete bolinha ou nao. - ACHEI RUIM, NÃO FIZ
+Colocar Github - OK
  */
 public class MainActivity extends AppCompatActivity {
+    //Constantes
+    private final String NUMEROS_SORTEADOS = "numerosSorteados";
+    private final String ULTIMO_NUMERO_SORTEADO = "ultimoNumeroSorteado";
+    private final String ULTIMO_COLUNA_SORTEADA = "ultimaColunaSorteada";
+
     //Random para sorteio de número do bingo
     private Random sorteador;
 
@@ -28,6 +33,10 @@ public class MainActivity extends AppCompatActivity {
     private Button sortearPedraButton;
 
     private ArrayList<Integer> numerosSorteados = new ArrayList<>();
+
+    private int numeroSorteado;
+
+    private String colunaSorteada;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,24 +56,57 @@ public class MainActivity extends AppCompatActivity {
     //ONCLICK do botao de sortear numero
     public void sortearProximaPedra(View view) {
         if (view.getId() == R.id.sortearPedraButton) {
-            int numeroSorteado;
-
             do {
                 numeroSorteado = sorteador.nextInt(74) + 1;
             } while (jaSorteado(numeroSorteado));
 
+            //Adiciona na lista de números que já foram sorteados
             numerosSorteados.add(numeroSorteado);
 
-            String colunaSorteada = getColunaSorteada(numeroSorteado);
+            colunaSorteada = getColunaSorteada(numeroSorteado);
 
             numeroSorteadoTextView.setText(colunaSorteada + "-" + numeroSorteado);
 
             if (numerosSorteados.size() >= 75) {
                 sortearPedraButton.setClickable(false);
-                sortearPedraButton.setText("Todos os números já sorteados!");
+                sortearPedraButton.setText(R.string.msg_finalizacao);
             }
         }
     }
+
+    @Override
+    protected void onSaveInstanceState(Bundle outState) {
+        super.onSaveInstanceState(outState);
+
+        // Salvar os dados de estado dinâmico
+        outState.putIntegerArrayList(NUMEROS_SORTEADOS, numerosSorteados);
+        outState.putInt(ULTIMO_NUMERO_SORTEADO, numeroSorteado);
+        outState.putString(ULTIMO_COLUNA_SORTEADA, colunaSorteada);
+    }
+
+    @Override
+    protected void onRestoreInstanceState(Bundle savedInstanceState) {
+        super.onRestoreInstanceState(savedInstanceState);
+
+        if (savedInstanceState != null) {
+            //Recupera a lista de números sorteados
+            ArrayList<Integer> numerosSorteadosRestored = savedInstanceState.getIntegerArrayList(NUMEROS_SORTEADOS);
+            if (numerosSorteadosRestored != null)
+                numerosSorteados.addAll(numerosSorteadosRestored);
+
+            //Recupera o ultimo número sorteado com a coluna
+            Integer ultimoNumero = savedInstanceState.getInt(ULTIMO_NUMERO_SORTEADO, 0);
+            String ultimaColuna= savedInstanceState.getString(ULTIMO_COLUNA_SORTEADA, null);
+            if(ultimoNumero != null && ultimoNumero != 0 && ultimaColuna != null) {
+                if (!numeroSorteadoTextView.getText().equals(R.string.msg_finalizacao)) {
+                    numeroSorteadoTextView.setText(ultimaColuna + " - " + ultimoNumero);
+                } else {
+                    numeroSorteadoTextView.setText(R.string.msg_finalizacao);
+                }
+            }
+        }
+    }
+
 
     //=====================================================================
     //=====================================================================
