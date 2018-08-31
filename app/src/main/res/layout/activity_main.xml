@@ -16,6 +16,13 @@
         android:text="@string/sortear_proxima_pedra" />
 
     <TextView
+        android:id="@+id/cartelaSorteadaTextView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:gravity="center_vertical|center_horizontal"
+        android:text="Sua cartela ainda não foi sorteada!" />
+
+    <TextView
         android:id="@+id/numeroSorteadoTextView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

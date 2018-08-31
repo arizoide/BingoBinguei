@@ -2,4 +2,5 @@
     <string name="app_name">BingoBinguei</string>
     <string name="sortear_proxima_pedra">Sortear Próxima Pedra</string>
     <string name="msg_finalizacao">Todos os números já sorteados!</string>
+    <string name="msg_bingo">BINGOOOOOOOOO!</string>
 </resources>
